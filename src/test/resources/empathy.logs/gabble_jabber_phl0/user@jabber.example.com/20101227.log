@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<?xml-stylesheet type="text/xsl" href="log-store-xml.xsl"?>
+<log>
+<message time='20110609T23:48:03' id='user@jabber.example.com' name='user@jabber.example.com' token='117bd6b634cac7c3fa74b69c3e89ffac48424774' isuser='false' type='normal'>Test</message>
+<message time='20110609T23:48:13' id='phl@jabber.example.com' name='phl@jabber.example.com' token='291d77be65f2a921c2ab63276901f42118111f37' isuser='true' type='normal'>this is a test</message>
+<message time='20110609T23:53:40' id='user@jabber.example.com' name='user@jabber.example.com' token='' isuser='false' type='normal'>yeah!</message>
+<message time='20110609T23:54:21' id='user@jabber.example.com' name='user@jabber.example.com' token='' isuser='false' type='normal'>test again!</message>
+<message time='20110609T23:54:35' id='user@jabber.example.com' name='user@jabber.example.com' token='' isuser='false' type='normal'>:-)</message>
+<message time='20110609T23:55:13' id='phl@jabber.example.com' name='phl@jabber.example.com' token='291d77be65f2a921c2ab63276901f42118111f37' isuser='true' type='normal'>extra long message that might course some actions :-)</message>
+</log>
