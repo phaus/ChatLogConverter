@@ -2,11 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.consolving.clconv.empathy;
+package de.consolving.clc.empathy;
 
-import de.consolving.clconv.model.Chat;
-import de.consolving.clconv.model.Entry;
-import de.consolving.clconv.writer.ChatLogWriter;
+import de.consolving.clc.impl.ChatImpl;
+import de.consolving.clc.impl.EntryImpl;
+import de.consolving.clc.model.Entry;
+import de.consolving.clc.writer.ChatLogWriter;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
@@ -19,10 +20,10 @@ import org.xml.sax.SAXException;
 public class EmpathyLogContentHandler implements ContentHandler {
 
     private ChatLogWriter writer;
-    private Chat chat;
+    private ChatImpl chat;
     private Entry entry = null;
 
-    public void setChat(Chat chat) {
+    public void setChat(ChatImpl chat) {
         this.chat = chat;
     }
 
@@ -53,19 +54,19 @@ public class EmpathyLogContentHandler implements ContentHandler {
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
         if ("message".equals(qName)) {
-            entry = new Entry();
+            entry = new EntryImpl();
             for (int i = 0; i < atts.getLength(); i++) {
                 if ("time".equals(atts.getQName(i))) {
-                    entry.time = atts.getValue(i);
+                    entry.setTime(atts.getValue(i));
                 }
                 if ("name".equals(atts.getQName(i))) {
-                    entry.name = atts.getValue(i);
+                    entry.setName(atts.getValue(i));
                 }
                 if ("type".equals(atts.getQName(i))) {
-                    entry.type = atts.getValue(i);
+                    entry.setType(atts.getValue(i));
                 }
                 if ("id".equals(atts.getQName(i))) {
-                    entry.id = atts.getValue(i);
+                    entry.setId(atts.getValue(i));
                 }
             }
         }
@@ -84,7 +85,7 @@ public class EmpathyLogContentHandler implements ContentHandler {
         for (int i = start; i < (start + length); i++) {
             sb.append(chars[i]);
         }
-        entry.message = sb.toString();
+        entry.setMessage(sb.toString());
         this.writer.writerEntry(entry, chat);
         entry = null;
     }

@@ -3,9 +3,9 @@
  * and open the template in the editor.
  */
 
-import de.consolving.clconv.parser.ChatLogParser;
-import de.consolving.clconv.parser.PurpleParser;
-import de.consolving.clconv.writer.LoggerWriter;
+import de.consolving.clc.parser.ChatLogParser;
+import de.consolving.clc.parser.PurpleParser;
+import de.consolving.clc.writer.LoggerWriter;
 import junit.framework.TestCase;
 
 /**

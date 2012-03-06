@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.consolving.clconv.parser;
+package de.consolving.clc.parser;
 
-import de.consolving.clconv.model.Account;
-import de.consolving.clconv.model.Contact;
-import de.consolving.clconv.writer.ChatLogWriter;
+import de.consolving.clc.impl.AccountImpl;
+import de.consolving.clc.impl.ContactImpl;
+import de.consolving.clc.writer.ChatLogWriter;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,10 +57,10 @@ public class PurpleParser implements ChatLogParser {
     }
 
     private void enumerateAccounts(File protocolFolder) {
-        Account account;
+        AccountImpl account;
         for (File accountFolder : protocolFolder.listFiles()) {
             if (!accountFolder.getName().startsWith(".")) {
-                account = new Account(accountFolder.getName(), protocolFolder.getName());
+                account = new AccountImpl(accountFolder.getName(), protocolFolder.getName());
                 writer.openAccount(account);
                 enumerateContacts(accountFolder);
                 writer.closeAccount(account);
@@ -77,7 +77,7 @@ public class PurpleParser implements ChatLogParser {
     }
 
     private void enumerateChats(File contactFolder) {
-        Contact contact = new Contact(contactFolder.getName().trim());
+        ContactImpl contact = new ContactImpl(contactFolder.getName().trim());
         writer.openContact(contact);
         for (File chatFile : contactFolder.listFiles()) {
             enumerateEntries(chatFile);

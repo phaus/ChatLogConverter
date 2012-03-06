@@ -2,13 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.consolving.clconv.parser;
+package de.consolving.clc.parser;
 
-import de.consolving.clconv.empathy.EmpathyLogContentHandler;
-import de.consolving.clconv.model.Account;
-import de.consolving.clconv.model.Chat;
-import de.consolving.clconv.model.Contact;
-import de.consolving.clconv.writer.ChatLogWriter;
+import de.consolving.clc.empathy.EmpathyLogContentHandler;
+import de.consolving.clc.impl.AccountImpl;
+import de.consolving.clc.impl.ChatImpl;
+import de.consolving.clc.impl.ContactImpl;
+import de.consolving.clc.writer.ChatLogWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -50,7 +50,7 @@ public class EmpathyParser implements ChatLogParser {
 
     private void enumerateAccounts() {
         if (logDirectory.exists()) {
-            Account account;
+            AccountImpl account;
             for (File accountFolder : logDirectory.listFiles()) {
                 if (!accountFolder.getName().startsWith(".")) {
                     account = getAccountFromFile(accountFolder);
@@ -78,7 +78,7 @@ public class EmpathyParser implements ChatLogParser {
     }
 
     private void enumerateChats(File contactFolder) {
-        Contact contact = new Contact(contactFolder.getName().trim());
+        ContactImpl contact = new ContactImpl(contactFolder.getName().trim());
         writer.openContact(contact);
         for (File chatFile : contactFolder.listFiles()) {
             enumerateEntries(chatFile);
@@ -91,7 +91,7 @@ public class EmpathyParser implements ChatLogParser {
             LOG.log(Level.INFO, "{0} is a ChatRoom!", chatFile.getName());
             return;
         }
-        Chat chat = new Chat(chatFile.getName().trim());
+        ChatImpl chat = new ChatImpl(chatFile.getName().trim());
         writer.openChat(chat);
         try {
             XMLReader xmlReader = XMLReaderFactory.createXMLReader();
@@ -122,10 +122,10 @@ public class EmpathyParser implements ChatLogParser {
         return name;
     }
 
-    private Account getAccountFromFile(File accountFile) {
+    private AccountImpl getAccountFromFile(File accountFile) {
         String accountName = cleanFileName(accountFile.getName());
         String parts[] = accountName.split("_");
-        Account account = new Account(catParts(parts, "", 2, parts.length), parts[1].trim());
+        AccountImpl account = new AccountImpl(catParts(parts, "", 2, parts.length), parts[1].trim());
         return account;
     }
 

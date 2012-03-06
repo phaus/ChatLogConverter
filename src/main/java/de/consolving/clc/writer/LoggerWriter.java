@@ -2,14 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.consolving.clconv.writer;
+package de.consolving.clc.writer;
 
-import de.consolving.clconv.model.Account;
-import de.consolving.clconv.model.Chat;
-import de.consolving.clconv.model.Contact;
-import de.consolving.clconv.model.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import de.consolving.clc.model.Account;
+import de.consolving.clc.model.Chat;
+import de.consolving.clc.model.Contact;
+import de.consolving.clc.model.Entry;
 
 /**
  *

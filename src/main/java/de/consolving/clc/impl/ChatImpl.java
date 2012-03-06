@@ -2,8 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.consolving.clconv.model;
+package de.consolving.clc.impl;
 
+import de.consolving.clc.model.Chat;
+import de.consolving.clc.model.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -11,12 +13,12 @@ import java.util.TreeSet;
  *
  * @author philipp
  */
-public class Chat {
+public class ChatImpl implements Chat {
     
     private String account;
     private Set<Entry> entries;
     
-    public Chat(String account){
+    public ChatImpl(String account){
         this.account = account;
         this.entries = new TreeSet<Entry>();
     }

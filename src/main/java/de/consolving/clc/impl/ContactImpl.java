@@ -2,17 +2,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.consolving.clconv.model;
+package de.consolving.clc.impl;
+
+import de.consolving.clc.model.Contact;
 
 /**
  *
  * @author philipp
  */
-public class Contact {
+public class ContactImpl implements Contact {
 
     private String name;
 
-    public Contact(String name) {
+    public ContactImpl(String name) {
         this.name = name;
     }
 
