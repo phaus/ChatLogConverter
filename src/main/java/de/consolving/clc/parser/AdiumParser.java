@@ -1,29 +1,38 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * AdiumParser 02.08.2013
+ *
+ * @author Philipp Haussleiter
+ *
  */
 package de.consolving.clc.parser;
 
+import de.consolving.clc.handler.AdiumLogContentHandler;
+import de.consolving.clc.handler.AdiumLogErrorHandler;
 import de.consolving.clc.impl.AccountImpl;
 import de.consolving.clc.impl.ChatImpl;
 import de.consolving.clc.impl.ContactImpl;
+import de.consolving.clc.tools.LogNormalizer;
 import de.consolving.clc.writer.ChatLogWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
-/**
- *
- * @author philipp
- */
-public class PurpleParser implements ChatLogParser {
+public class AdiumParser implements ChatLogParser {
 
-    private final static Logger LOG = Logger.getLogger(PurpleParser.class.getName());
-    private static PurpleParser instance = new PurpleParser();
+    private final static Logger LOG = Logger.getLogger(AdiumParser.class.getName());
+    private static AdiumParser instance = new AdiumParser();
     private File logDirectory;
     private ChatLogWriter writer;
+    private LogNormalizer ln;
 
-    public static PurpleParser getInstance() {
+    public static AdiumParser getInstance() {
         return instance;
     }
 
@@ -43,6 +52,10 @@ public class PurpleParser implements ChatLogParser {
     @Override
     public void parseAndWrite() {
         enumerateProtocols();
+    }
+
+    private AdiumParser() {
+        ln = new LogNormalizer("/tmp");
     }
 
     private void enumerateProtocols() {
@@ -77,18 +90,48 @@ public class PurpleParser implements ChatLogParser {
         }
     }
 
+    /**
+     * Enumerates the Log Files itself.
+     * Older Version of Adium did not use a Bundle for Logs, just a plain file.
+     * @param contactFolder 
+     */
     private void enumerateChats(File contactFolder) {
         ContactImpl contact = new ContactImpl(contactFolder.getName().trim());
         writer.openContact(contact);
-        for (File chatFile : contactFolder.listFiles()) {
-            enumerateEntries(chatFile);
+        // This is for older Adium Versions.
+        if (contactFolder.isFile()) {
+            enumerateEntries(contactFolder);
+        } else {
+            for (File chatFile : contactFolder.listFiles()) {
+                if (!chatFile.getName().startsWith(".")) {
+                    enumerateEntries(chatFile);
+                }
+            }
         }
         writer.closeContact(contact);
     }
 
     private void enumerateEntries(File chatFile) {
         ChatImpl chat = new ChatImpl(chatFile.getName().trim());
-        writer.openChat(chat);  
+        writer.openChat(chat);
+        try {
+            XMLReader xmlReader = XMLReaderFactory.createXMLReader();
+            chatFile = ln.EncodeHTMLinXML(chatFile, "message");
+            FileReader reader = new FileReader(chatFile.getAbsolutePath());
+            InputSource inputSource = new InputSource(reader);
+            AdiumLogContentHandler handler = new AdiumLogContentHandler();
+            handler.setChat(chat);
+            handler.setWriter(writer);
+            xmlReader.setContentHandler(handler);
+            xmlReader.setErrorHandler(new AdiumLogErrorHandler());
+            xmlReader.parse(inputSource);
+        } catch (FileNotFoundException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
         writer.closeChat(chat);
     }
 }

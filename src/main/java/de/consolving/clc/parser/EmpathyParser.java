@@ -4,7 +4,7 @@
  */
 package de.consolving.clc.parser;
 
-import de.consolving.clc.empathy.EmpathyLogContentHandler;
+import de.consolving.clc.handler.EmpathyLogContentHandler;
 import de.consolving.clc.impl.AccountImpl;
 import de.consolving.clc.impl.ChatImpl;
 import de.consolving.clc.impl.ContactImpl;

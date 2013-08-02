@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.consolving.clc.empathy;
+package de.consolving.clc.handler;
 
 import de.consolving.clc.impl.ChatImpl;
 import de.consolving.clc.impl.EntryImpl;

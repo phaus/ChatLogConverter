@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.consolving.clc.impl;
 
 import de.consolving.clc.model.Entry;
@@ -20,7 +16,7 @@ public class EntryImpl implements Comparable<Entry>, Entry {
 
     @Override
     public String toString() {
-        return time + " " + name + " (" + id + "): " + message;
+        return type + ": " + time + " " + name + " (" + id + "): " + message;
     }
 
     @Override
