@@ -1,6 +1,6 @@
 # Chat Log Converter
 
-[![Build Status](https://consolving.de/jenkins/buildStatus/icon?job=de.consolving.chatlogconverter)](https://consolving.de/jenkins/view/opensource/job/de.consolving.chatlogconverter/)
+<a href='https://consolving.de/jenkins/view/opensource/job/de.consolving.chatlogconverter/'><img src='https://consolving.de/jenkins/buildStatus/icon?job=de.consolving.chatlogconverter'></a>
 
 ## Features
 
