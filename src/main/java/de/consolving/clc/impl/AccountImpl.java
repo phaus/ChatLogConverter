@@ -12,8 +12,8 @@ import de.consolving.clc.model.Account;
  */
 public class AccountImpl implements Account {
 
-    private String protocol;
-    private String name;
+    private final String protocol;
+    private final String name;
 
     public AccountImpl(String name, String protocol) {
         this.protocol = protocol;

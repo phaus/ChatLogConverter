@@ -8,10 +8,14 @@ import de.consolving.clc.model.Contact;
  */
 public class ContactImpl implements Contact {
 
-    private String name;
+    private final String name;
 
     public ContactImpl(String name) {
         this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     @Override

@@ -6,10 +6,6 @@
  */
 package de.consolving.clc.model;
 
-/**
- *
- * @author Philipp Haußleiter
- */
 public interface Contact {
-
+    public String getName();
 }

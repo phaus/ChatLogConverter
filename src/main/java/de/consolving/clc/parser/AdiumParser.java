@@ -74,7 +74,7 @@ public class AdiumParser implements ChatLogParser {
         AccountImpl account;
         for (File accountFolder : protocolFolder.listFiles()) {
             if (!accountFolder.getName().startsWith(".")) {
-                account = new AccountImpl(accountFolder.getName(), protocolFolder.getName());
+                account = new AccountImpl(getNameFromFolder(accountFolder.getName()), protocolFolder.getName());
                 writer.openAccount(account);
                 enumerateContacts(accountFolder);
                 writer.closeAccount(account);
@@ -91,12 +91,13 @@ public class AdiumParser implements ChatLogParser {
     }
 
     /**
-     * Enumerates the Log Files itself.
-     * Older Version of Adium did not use a Bundle for Logs, just a plain file.
-     * @param contactFolder 
+     * Enumerates the Log Files itself. Older Version of Adium did not use a
+     * Bundle for Logs, just a plain file.
+     *
+     * @param contactFolder
      */
     private void enumerateChats(File contactFolder) {
-        ContactImpl contact = new ContactImpl(contactFolder.getName().trim());
+        ContactImpl contact = new ContactImpl(getNameFromFolder(contactFolder.getName()));
         writer.openContact(contact);
         // This is for older Adium Versions.
         if (contactFolder.isFile()) {
@@ -112,7 +113,7 @@ public class AdiumParser implements ChatLogParser {
     }
 
     private void enumerateEntries(File chatFile) {
-        ChatImpl chat = new ChatImpl(chatFile.getName().trim());
+        ChatImpl chat = new ChatImpl(getNameFromFolder(chatFile.getName()));
         writer.openChat(chat);
         try {
             XMLReader xmlReader = XMLReaderFactory.createXMLReader();
@@ -133,5 +134,10 @@ public class AdiumParser implements ChatLogParser {
             LOG.log(Level.SEVERE, null, ex);
         }
         writer.closeChat(chat);
+    }
+
+    private static String getNameFromFolder(String folder) {
+        String[] parts = folder.trim().split(" ");
+        return parts[0];
     }
 }
