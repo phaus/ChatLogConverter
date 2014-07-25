@@ -11,7 +11,7 @@ public class EntryImpl implements Comparable<Entry>, Entry {
     private String time;
     private String name;
     private String id;
-    private String message;
+    private String message = "";
     private String type;
 
     @Override

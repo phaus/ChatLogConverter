@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<chat xmlns="http://purl.org/net/ulf/ns/0.4-02" account="user@example.com" service="Jabber" adiumversion="1.5.8" buildid="e0467f507718">
+	<event type="windowOpened" sender="user@example.com" time="2013-11-03T22:44:20+01:00"/>
+	<message sender="user@example.com" time="2013-11-03T22:44:19+01:00" alias="User">
+		<div>welcome back....</div>
+	</message>
+	<message sender="user@example.com" time="2013-11-03T22:44:23+01:00" alias="User">
+		<div>schön erholt?</div>
+	</message>
+	<message sender="otheruser@example.com" time="2013-11-03T22:53:53+01:00" alias="other User">
+		<div>
+			<span style="font-family: Helvetica; font-size: 12pt;">hey, guten abend</span>
+		</div>
+	</message>
+	<message sender="user@example.com" time="2013-11-03T22:54:16+01:00" alias="User">
+		<div>:-)</div>
+	</message>
+	<message sender="otheruser@example.com" time="2008-07-04T00:03:55+02:00">
+		<div>
+			<span style="font-family: Helvetica; font-size: 12pt;">sha256:  41ee020e507ae2baece0e5b5b947503b5e44b160221d85b60570ad397bb283cb</span>
+			<br/>
+			<span style="font-family: Helvetica; font-size: 12pt;">icq#: 123456789</span>
+			<br/>
+			<span style="font-family: Helvetica; font-size: 12pt;">alias: otheruser</span>
+		</div>
+	</message>
+	<message sender="user@example.com" time="2008-07-04T00:02:44+02:00">
+		<div>
+			<a href="http://www.bichlmeier.info/sha256.html">
+				<span style="font-family: Helvetica; font-size: 12pt;">http://www.bichlmeier.info/sha256.html</span>
+			</a>
+			<span style="font-family: Helvetica; font-size: 12pt;">    mach das da mal bitte</span>
+		</div>
+	</message>
+	<event type="windowClosed" sender="user@example.com" time="2013-11-03T23:32:52+01:00"/>
+</chat>
