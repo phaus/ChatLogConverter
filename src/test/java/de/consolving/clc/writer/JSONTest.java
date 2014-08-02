@@ -1,8 +1,9 @@
+package de.consolving.clc.writer;
+
 
 import de.consolving.clc.parser.AdiumParser;
 import de.consolving.clc.parser.ChatLogParser;
 import de.consolving.clc.parser.EmpathyParser;
-import de.consolving.clc.writer.JSONLoggerWriter;
 import junit.framework.TestCase;
 
 /**

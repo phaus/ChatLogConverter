@@ -1,6 +1,7 @@
 package de.consolving.clc.impl;
 
 import de.consolving.clc.model.Entry;
+import java.util.Date;
 
 /**
  *
@@ -8,7 +9,7 @@ import de.consolving.clc.model.Entry;
  */
 public class EntryImpl implements Comparable<Entry>, Entry {
 
-    private String time;
+    private Date time;
     private String name;
     private String id;
     private String message = "";
@@ -24,7 +25,7 @@ public class EntryImpl implements Comparable<Entry>, Entry {
         return this.time.compareTo(t.getTime());
     }
 
-    public String getTime() {
+    public Date getTime() {
         return time;
     }
 
@@ -44,7 +45,7 @@ public class EntryImpl implements Comparable<Entry>, Entry {
         return type;
     }
 
-    public void setTime(String time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 

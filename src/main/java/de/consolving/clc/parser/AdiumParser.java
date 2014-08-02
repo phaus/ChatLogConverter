@@ -17,6 +17,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.xml.sax.InputSource;
@@ -25,15 +28,15 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 public class AdiumParser implements ChatLogParser {
-
-    private final static Logger LOG = Logger.getLogger(AdiumParser.class.getName());
-    private static AdiumParser instance = new AdiumParser();
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH.mm.ssZ");
+    private static final AdiumParser INSTANCE = new AdiumParser();
+    private static final Logger LOG = Logger.getLogger(AdiumParser.class.getName());
+    private final LogNormalizer ln;
     private File logDirectory;
     private ChatLogWriter writer;
-    private LogNormalizer ln;
 
     public static AdiumParser getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
     @Override
@@ -74,7 +77,7 @@ public class AdiumParser implements ChatLogParser {
         AccountImpl account;
         for (File accountFolder : protocolFolder.listFiles()) {
             if (!accountFolder.getName().startsWith(".")) {
-                account = new AccountImpl(getNameFromFolder(accountFolder.getName()), protocolFolder.getName());
+                account = new AccountImpl(getNameFromAccountFolder(accountFolder.getName()), protocolFolder.getName());
                 writer.openAccount(account);
                 enumerateContacts(accountFolder);
                 writer.closeAccount(account);
@@ -97,7 +100,7 @@ public class AdiumParser implements ChatLogParser {
      * @param contactFolder
      */
     private void enumerateChats(File contactFolder) {
-        ContactImpl contact = new ContactImpl(getNameFromFolder(contactFolder.getName()));
+        ContactImpl contact = new ContactImpl(getNameFromChatFolder(contactFolder.getName()));
         writer.openContact(contact);
         // This is for older Adium Versions.
         if (contactFolder.isFile()) {
@@ -113,7 +116,7 @@ public class AdiumParser implements ChatLogParser {
     }
 
     private void enumerateEntries(File chatFile) {
-        ChatImpl chat = new ChatImpl(getNameFromFolder(chatFile.getName()));
+        ChatImpl chat = getChatFromEntryFolder(chatFile.getName());
         writer.openChat(chat);
         try {
             XMLReader xmlReader = XMLReaderFactory.createXMLReader();
@@ -136,7 +139,31 @@ public class AdiumParser implements ChatLogParser {
         writer.closeChat(chat);
     }
 
-    private static String getNameFromFolder(String folder) {
+    private static ChatImpl getChatFromEntryFolder(String folder) {
+        LOG.log(Level.INFO, "found Entry folder {0}", folder);
+        String folderName = folder.trim().replace(".chatlog", "");
+        String[] parts = folderName.trim().split(" ");
+        Date date = new Date();
+        if (parts.length > 1) {
+            try {
+                date = DATE_FORMAT.parse(parts[1].replace("(", "").replace(")", ""));
+            } catch (ParseException ex) {
+                LOG.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+            }
+            LOG.log(Level.INFO, "date {0}", date.toString());
+
+        }
+        return new ChatImpl(parts[0].trim(), date);
+    }
+
+    private static String getNameFromChatFolder(String folder) {
+        LOG.log(Level.INFO, "found Chat folder {0}", folder);
+        String[] parts = folder.trim().split(" ");
+        return parts[0];
+    }
+
+    private static String getNameFromAccountFolder(String folder) {
+        LOG.log(Level.INFO, "found Account folder {0}", folder);
         String[] parts = folder.trim().split(" ");
         return parts[0];
     }

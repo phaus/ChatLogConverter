@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.xml.sax.InputSource;
@@ -26,8 +27,9 @@ import org.xml.sax.helpers.XMLReaderFactory;
  */
 public class EmpathyParser implements ChatLogParser {
 
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd'T'HH:mm:ss");
     private final static Logger LOG = Logger.getLogger(ChatLogParser.class.getName());
-    private static EmpathyParser instance = new EmpathyParser();
+    private static final EmpathyParser instance = new EmpathyParser();
     private File logDirectory;
     private ChatLogWriter writer;
 
@@ -87,7 +89,7 @@ public class EmpathyParser implements ChatLogParser {
     }
 
     private void enumerateEntries(File chatFile) {
-        if(chatFile.isDirectory()){
+        if (chatFile.isDirectory()) {
             LOG.log(Level.INFO, "{0} is a ChatRoom!", chatFile.getName());
             return;
         }

@@ -9,7 +9,10 @@ package de.consolving.clc.handler;
 import de.consolving.clc.impl.ChatImpl;
 import de.consolving.clc.impl.EntryImpl;
 import de.consolving.clc.model.Entry;
+import de.consolving.clc.parser.AdiumParser;
 import de.consolving.clc.writer.ChatLogWriter;
+import java.text.ParseException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -78,7 +81,11 @@ public class AdiumLogContentHandler implements ContentHandler {
     private Entry getEntryWithAttributes(Entry e, Attributes atts) {
         for (int i = 0; i < atts.getLength(); i++) {
             if ("time".equals(atts.getQName(i))) {
-                entry.setTime(atts.getValue(i));
+                try {
+                    entry.setTime(AdiumParser.DATE_FORMAT.parse(atts.getValue(i)));
+                } catch (ParseException ex) {
+                    LOG.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+                }
             }
             if ("sender".equals(atts.getQName(i))) {
                 entry.setId(atts.getValue(i));

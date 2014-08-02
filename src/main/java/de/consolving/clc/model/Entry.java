@@ -6,13 +6,15 @@
  */
 package de.consolving.clc.model;
 
+import java.util.Date;
+
 /**
  *
  * @author Philipp Haußleiter
  */
 public interface Entry {
 
-    public String getTime();
+    public Date getTime();
 
     public String getName();
 
@@ -22,7 +24,7 @@ public interface Entry {
 
     public String getType();
 
-    public void setTime(String time);
+    public void setTime(Date time);
 
     public void setName(String name);
 

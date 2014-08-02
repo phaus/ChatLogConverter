@@ -9,6 +9,9 @@ import de.consolving.clc.impl.ChatImpl;
 import de.consolving.clc.impl.ContactImpl;
 import de.consolving.clc.writer.ChatLogWriter;
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,13 +21,14 @@ import java.util.logging.Logger;
  */
 public class PurpleParser implements ChatLogParser {
 
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd.HHmmsszzzzzzzzz");
     private final static Logger LOG = Logger.getLogger(PurpleParser.class.getName());
-    private static PurpleParser instance = new PurpleParser();
+    private static final PurpleParser INSTANCE = new PurpleParser();
     private File logDirectory;
     private ChatLogWriter writer;
 
     public static PurpleParser getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
     @Override
@@ -72,23 +76,33 @@ public class PurpleParser implements ChatLogParser {
     private void enumerateContacts(File accountFolder) {
         for (File contactFolder : accountFolder.listFiles()) {
             if (!contactFolder.getName().startsWith(".")) {
-                enumerateChats(contactFolder);
+                enumerateChats(contactFolder, accountFolder);
             }
         }
     }
 
-    private void enumerateChats(File contactFolder) {
+    private void enumerateChats(File contactFolder, File accountFolder) {
         ContactImpl contact = new ContactImpl(contactFolder.getName().trim());
         writer.openContact(contact);
         for (File chatFile : contactFolder.listFiles()) {
-            enumerateEntries(chatFile);
+            enumerateEntries(chatFile, accountFolder);
         }
         writer.closeContact(contact);
     }
 
-    private void enumerateEntries(File chatFile) {
-        ChatImpl chat = new ChatImpl(chatFile.getName().trim());
-        writer.openChat(chat);  
+    private void enumerateEntries(File chatFile, File accountFolder) {
+        ChatImpl chat = getChatFromEntryFile(accountFolder.getName().trim(), chatFile.getName().trim());
+        writer.openChat(chat);
         writer.closeChat(chat);
+    }
+
+    private ChatImpl getChatFromEntryFile(String account, String filename) {
+        Date date = new Date();
+        try {
+            date = DATE_FORMAT.parse(filename.replace(".html", ""));
+        } catch (ParseException ex) {
+            LOG.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+        }
+        return new ChatImpl(account, date);
     }
 }

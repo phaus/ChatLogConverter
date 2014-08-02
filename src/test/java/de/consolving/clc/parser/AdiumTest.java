@@ -1,7 +1,8 @@
+package de.consolving.clc.parser;
 
-import de.consolving.clc.parser.AdiumParser;
-import de.consolving.clc.parser.ChatLogParser;
 import de.consolving.clc.writer.LoggerWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import junit.framework.TestCase;
 
 /**
@@ -16,6 +17,7 @@ public class AdiumTest extends TestCase {
 
     public AdiumTest(String testName) {
         super(testName);
+        Logger.getLogger(AdiumParser.class.getName()).setLevel(Level.FINE);
     }
 
     public void testAdiumParse() {
@@ -23,7 +25,7 @@ public class AdiumTest extends TestCase {
         ChatLogParser parser = AdiumParser.getInstance();
         parser.setLogDirectory(ADIUM_LOG_DIR);
         parser.setWriter(writer);
-        parser.parseAndWrite();  
+        parser.parseAndWrite();
     }
 
     @Override

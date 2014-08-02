@@ -1,10 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package de.consolving.clc.parser;
 
-import de.consolving.clc.parser.ChatLogParser;
-import de.consolving.clc.parser.EmpathyParser;
 import de.consolving.clc.writer.LoggerWriter;
 import junit.framework.TestCase;
 
