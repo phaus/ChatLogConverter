@@ -130,18 +130,17 @@ public class EmpathyParser implements ChatLogParser {
     private String cleanFileName(String name) {
         String find[] = {"_2e", "_40"};
         String replace[] = {".", "@"};
-        name = name.substring(0, name.length() - 1);
+        String modName = name.substring(0, name.length() - 1);
         for (int i = 0; i < find.length; i++) {
-            name = name.replace(find[i], replace[i]);
+            modName = modName.replace(find[i], replace[i]);
         }
-        return name;
+        return modName;
     }
 
     private AccountImpl getAccountFromFile(File accountFile) {
         String accountName = cleanFileName(accountFile.getName());
         String parts[] = accountName.split("_");
-        AccountImpl account = new AccountImpl(catParts(parts, "", 2, parts.length), parts[1].trim());
-        return account;
+        return new AccountImpl(catParts(parts, "", 2, parts.length), parts[1].trim());
     }
 
     private String catParts(String parts[], String filler, int fromIndex, int toIndex) {
