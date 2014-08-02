@@ -13,7 +13,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.xml.sax.InputSource;
@@ -27,7 +29,8 @@ import org.xml.sax.helpers.XMLReaderFactory;
  */
 public class EmpathyParser implements ChatLogParser {
 
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd'T'HH:mm:ss");
+    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("yyyyMMdd'T'HH:mm:ss");
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
     private final static Logger LOG = Logger.getLogger(ChatLogParser.class.getName());
     private static final EmpathyParser instance = new EmpathyParser();
     private File logDirectory;
@@ -74,26 +77,26 @@ public class EmpathyParser implements ChatLogParser {
     private void enumerateContacts(File accountFolder) {
         for (File contactFolder : accountFolder.listFiles()) {
             if (!contactFolder.getName().startsWith(".")) {
-                enumerateChats(contactFolder);
+                enumerateChats(contactFolder, accountFolder);
             }
         }
     }
 
-    private void enumerateChats(File contactFolder) {
+    private void enumerateChats(File contactFolder, File accountFolder) {
         ContactImpl contact = new ContactImpl(contactFolder.getName().trim());
         writer.openContact(contact);
         for (File chatFile : contactFolder.listFiles()) {
-            enumerateEntries(chatFile);
+            enumerateEntries(chatFile, accountFolder);
         }
         writer.closeContact(contact);
     }
 
-    private void enumerateEntries(File chatFile) {
+    private void enumerateEntries(File chatFile, File accountFolder) {
         if (chatFile.isDirectory()) {
             LOG.log(Level.INFO, "{0} is a ChatRoom!", chatFile.getName());
             return;
         }
-        ChatImpl chat = new ChatImpl(chatFile.getName().trim());
+        ChatImpl chat = getChatFromChatFile(chatFile.getName().trim(), accountFolder.getName().trim());
         writer.openChat(chat);
         try {
             XMLReader xmlReader = XMLReaderFactory.createXMLReader();
@@ -112,6 +115,16 @@ public class EmpathyParser implements ChatLogParser {
             LOG.log(Level.SEVERE, null, ex);
         }
         writer.closeChat(chat);
+    }
+
+    private ChatImpl getChatFromChatFile(String filename, String account) {
+        Date date = new Date();
+        try {
+            date = DATE_FORMAT.parse(filename.replace(".log", ""));
+        } catch (ParseException ex) {
+            LOG.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+        }
+        return new ChatImpl(account, date);
     }
 
     private String cleanFileName(String name) {

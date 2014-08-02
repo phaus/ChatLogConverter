@@ -9,9 +9,10 @@ package de.consolving.clc.handler;
 import de.consolving.clc.impl.ChatImpl;
 import de.consolving.clc.impl.EntryImpl;
 import de.consolving.clc.model.Entry;
-import de.consolving.clc.parser.AdiumParser;
 import de.consolving.clc.writer.ChatLogWriter;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.xml.sax.Attributes;
@@ -21,6 +22,9 @@ import org.xml.sax.SAXException;
 
 public class AdiumLogContentHandler implements ContentHandler {
 
+    // 2013-11-03T22:44:19+01:00
+
+    private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
     private final static Logger LOG = Logger.getLogger(AdiumLogContentHandler.class.getName());
     private static final String EVENT = "event";
     private static final String STATUS = "status";
@@ -78,11 +82,21 @@ public class AdiumLogContentHandler implements ContentHandler {
         }
     }
 
+    private Date parseDate(String dateString) throws ParseException {
+        Date date = null;
+        int stringLen = dateString.trim().length();
+        if (stringLen > 6) {
+            String zPart = dateString.substring(stringLen - 6, stringLen);
+            date = TIME_FORMAT.parse(dateString.substring(0, stringLen - 6) + zPart.replace(":", ""));
+        }
+        return date;
+    }
+
     private Entry getEntryWithAttributes(Entry e, Attributes atts) {
         for (int i = 0; i < atts.getLength(); i++) {
             if ("time".equals(atts.getQName(i))) {
                 try {
-                    entry.setTime(AdiumParser.DATE_FORMAT.parse(atts.getValue(i)));
+                    entry.setTime(parseDate(atts.getValue(i)));
                 } catch (ParseException ex) {
                     LOG.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
                 }

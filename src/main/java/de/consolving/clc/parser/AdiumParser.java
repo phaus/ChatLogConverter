@@ -28,7 +28,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 public class AdiumParser implements ChatLogParser {
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH.mm.ssZ");
+    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH.mm.ssZ");
     private static final AdiumParser INSTANCE = new AdiumParser();
     private static final Logger LOG = Logger.getLogger(AdiumParser.class.getName());
     private final LogNormalizer ln;
@@ -140,13 +140,12 @@ public class AdiumParser implements ChatLogParser {
     }
 
     private static ChatImpl getChatFromEntryFolder(String folder) {
-        LOG.log(Level.INFO, "found Entry folder {0}", folder);
         String folderName = folder.trim().replace(".chatlog", "");
         String[] parts = folderName.trim().split(" ");
         Date date = new Date();
         if (parts.length > 1) {
             try {
-                date = DATE_FORMAT.parse(parts[1].replace("(", "").replace(")", ""));
+                date = TIME_FORMAT.parse(parts[1].replace("(", "").replace(")", ""));
             } catch (ParseException ex) {
                 LOG.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
             }
@@ -157,13 +156,11 @@ public class AdiumParser implements ChatLogParser {
     }
 
     private static String getNameFromChatFolder(String folder) {
-        LOG.log(Level.INFO, "found Chat folder {0}", folder);
         String[] parts = folder.trim().split(" ");
         return parts[0];
     }
 
     private static String getNameFromAccountFolder(String folder) {
-        LOG.log(Level.INFO, "found Account folder {0}", folder);
         String[] parts = folder.trim().split(" ");
         return parts[0];
     }

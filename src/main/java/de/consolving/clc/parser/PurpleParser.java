@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class PurpleParser implements ChatLogParser {
 
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd.HHmmsszzzzzzzzz");
+    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd.HHmmsszzzzzzzzz");
     private final static Logger LOG = Logger.getLogger(PurpleParser.class.getName());
     private static final PurpleParser INSTANCE = new PurpleParser();
     private File logDirectory;
@@ -99,7 +99,7 @@ public class PurpleParser implements ChatLogParser {
     private ChatImpl getChatFromEntryFile(String account, String filename) {
         Date date = new Date();
         try {
-            date = DATE_FORMAT.parse(filename.replace(".html", ""));
+            date = TIME_FORMAT.parse(filename.replace(".html", ""));
         } catch (ParseException ex) {
             LOG.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
         }

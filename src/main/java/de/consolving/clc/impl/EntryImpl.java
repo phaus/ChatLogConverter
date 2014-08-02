@@ -15,16 +15,6 @@ public class EntryImpl implements Comparable<Entry>, Entry {
     private String message = "";
     private String type;
 
-    @Override
-    public String toString() {
-        return type + ": " + time + " " + name + " (" + id + "): " + message;
-    }
-
-    @Override
-    public int compareTo(Entry t) {
-        return this.time.compareTo(t.getTime());
-    }
-
     public Date getTime() {
         return time;
     }
@@ -64,4 +54,15 @@ public class EntryImpl implements Comparable<Entry>, Entry {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public int compareTo(Entry t) {
+        return this.time.compareTo(t.getTime());
+    }
+
+    @Override
+    public String toString() {
+        return type + ": " + (time != null ? time.toString() : "NULL") + " " + name + " (" + id + "): " + message;
+    }
+
 }

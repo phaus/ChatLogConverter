@@ -63,7 +63,7 @@ public class EmpathyLogContentHandler implements ContentHandler {
             for (int i = 0; i < atts.getLength(); i++) {
                 if ("time".equals(atts.getQName(i))) {
                     try {
-                        entry.setTime(EmpathyParser.DATE_FORMAT.parse(atts.getValue(i)));
+                        entry.setTime(EmpathyParser.TIME_FORMAT.parse(atts.getValue(i)));
                     } catch (ParseException ex) {
                         LOG.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
                     }
